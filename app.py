@@ -1,6 +1,6 @@
 from flask import Flask, render_template, request, redirect, session
-import json
 import sqlite3
+from werkzeug.security import generate_password_hash, check_password_hash
 
 app = Flask(__name__)
 
@@ -26,7 +26,7 @@ def login():
         user = cursor.fetchone()
         conn.close()
         if user:
-            if password == user[2]:
+            if check_password_hash(user[2], password):
                 session["username"] = user[1]
                 session["role"] = user[3]
                 return redirect("/dashboard")
@@ -42,16 +42,20 @@ def register():
     if request.method == "POST":
         username = request.form["username"]
         password = request.form["password"]
+        hashed = generate_password_hash(password)
         conn = sqlite3.connect("marketplace.db")
         cursor = conn.cursor()
+        try:
+            cursor.execute("""
+            INSERT INTO users (username, password, role)
+            VALUES (?, ?, ?)
+            """, (username, hashed, "user"))
+            conn.commit()
+            conn.close()
+            return redirect ("/login")
+        except sqlite3.IntegrityError:
+            return "Username sudah digunakan"
 
-        cursor.execute("""
-        INSERT INTO users (username, password, role)
-        VALUES (?, ?, ?)
-        """, (username, password, "user"))
-        conn.commit()
-        conn.close()
-        return redirect ("/login")
     return render_template("register.html")
 
 @app.route("/dashboard")
@@ -93,7 +97,7 @@ def delete():
             )
 
             hasil = cursor.fetchone()
-            if hasil and password == hasil[0]:
+            if hasil and check_password_hash(hasil[0], password):
                 cursor.execute(
                     "DELETE FROM users WHERE username = ?",
                     (session["username"],)
@@ -115,11 +119,12 @@ def change_password():
     else:
         if request.method == "POST":
             password = request.form["password"]
+            hashed = generate_password_hash(password)
             conn = sqlite3.connect("marketplace.db")
             cursor = conn.cursor()
             cursor.execute(
                 "UPDATE users SET password = ? WHERE username = ?",
-                    (password, session["username"])
+                    (hashed, session["username"])
             )
             conn.commit()
             conn.close()
@@ -173,16 +178,18 @@ def add_product():
 
 @app.route("/update-product/<int:id>", methods = ["GET", "POST"])
 def update_product(id):
+        conn = sqlite3.connect("marketplace.db")
+        cursor = conn.cursor()
+        cursor.execute("""
+        SELECT * FROM products WHERE id = ? AND penjual = ?
+        """, (id, session["username"])
+
+        )
+        products = cursor.fetchone()
+        if products is None:
+            return redirect("/dashboard")
 
         if request.method == "POST":
-            conn = sqlite3.connect("marketplace.db")
-            cursor = conn.cursor()
-            cursor.execute("""
-            SELECT * FROM products WHERE id = ?
-            """, (id,)
-    
-            )
-            products = cursor.fetchone()
             nama = products[1]
             harga = products[2]
             deskripsi = products[3]
@@ -198,14 +205,41 @@ def update_product(id):
                 deskripsi_baru = deskripsi
 
             cursor.execute("""
-            UPDATE products SET nama = ?, harga = ?, deskripsi = ? WHERE id = ? """,
-               (nama_baru, harga_baru, deskripsi_baru, id)
+            UPDATE products SET nama = ?, harga = ?, deskripsi = ? WHERE id = ? AND penjual = ? """,
+               (nama_baru, harga_baru, deskripsi_baru, id, session["username"])
             )
             conn.commit()
             conn.close()
             return redirect("/dashboard")
 
         return render_template("update_product.html")
+
+@app.route("/delete-product/<int:id>", methods = ["GET", "POST"])
+def delete_product(id):
+        conn = sqlite3.connect("marketplace.db")
+        cursor = conn.cursor()
+        cursor.execute("""
+        SELECT * FROM products WHERE id = ? AND penjual = ?
+        """, (id, session["username"])
+
+        )
+        products = cursor.fetchone()
+        if products is None:
+            return redirect("/dashboard")
+        if request.method == "POST":
+            pilihan = request.form.get("konfirmasi")
+
+            if pilihan == "ya":
+                cursor.execute("""
+                DELETE FROM products WHERE id = ? AND penjual = ?""",
+                (id, session["username"])
+                )
+                conn.commit()
+                conn.close()
+                return redirect("/dashboard")
+            else:
+                return redirect("/dashboard")
+        return render_template("delete_product.html")
 
 if __name__ == "__main__":
     app.run(host="0.0.0.0", port=5000, debug=True)
