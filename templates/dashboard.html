@@ -20,7 +20,7 @@
     {% for produk in daftar_produk %}
 
     <p>Nama: {{produk[1]}}</p>
-    <p>Harga: Rp {{produk[2]}}</p>
+    <p>Harga: Rp {{ "{:,}".format(produk[2]).replace(",", ".")}}</p>
     <p>Deskripsi: {{produk[3]}}</p>
     <p>Penjual: {{produk[4]}}</p>
     <a href="/update-product/{{ produk[0] }}">Perbarui produk</a>
@@ -34,6 +34,7 @@
     <a href="/change-password">Ganti password</a>
     <a href="/change-name">Ganti nama</a>
     <a href="/add-product">Tambah produk</a>
+    <a href="/marketplace">Marketplace</a>
     
 
 </body>

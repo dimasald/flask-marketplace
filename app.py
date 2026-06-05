@@ -194,7 +194,14 @@ def update_product(id):
             harga = products[2]
             deskripsi = products[3]
             nama_baru = request.form["nama produk"]
-            harga_baru = request.form["harga"]
+            harga_input = request.form["harga"]
+            if harga_input == "":
+                harga_baru = harga
+            else:
+                try:
+                    harga_baru = int(request.form["harga"])
+                except ValueError:
+                    return "Harga harus berupa angka"
             deskripsi_baru = request.form["deskripsi"]
 
             if nama_baru == "":
@@ -240,6 +247,23 @@ def delete_product(id):
             else:
                 return redirect("/dashboard")
         return render_template("delete_product.html")
+
+@app.route("/marketplace", methods = ["GET", "POST"])
+def marketplace():
+    if "username" not in session:
+        return redirect("/login")
+    else:
+        conn = sqlite3.connect("marketplace.db")
+        cursor = conn.cursor()
+        cursor.execute(
+            "SELECT * FROM products"
+        )
+        products = cursor.fetchall()
+        conn.close()
+    return render_template("marketplace.html",
+                           daftar_produk = products)
+
+
 
 if __name__ == "__main__":
     app.run(host="0.0.0.0", port=5000, debug=True)
