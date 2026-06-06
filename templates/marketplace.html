@@ -14,7 +14,9 @@
     <p>Harga: Rp {{ "{:,}".format(produk[2]).replace(",", ".")}}</p>
     <p>Deskripsi: {{produk[3]}}</p>
     <p>Penjual: {{produk[4]}}</p>
-
+    {% if pembeli != produk[4] %}
+    <a href="/buy-product">Beli Produk</a>
+    {% endif %}
     <hr>
     {% endfor %}
 

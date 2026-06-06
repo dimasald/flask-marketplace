@@ -73,13 +73,19 @@ def dashboard():
             "SELECT * FROM products WHERE penjual = ?", (session["username"],)
         )
         products = cursor.fetchall()
+        cursor.execute(
+            "SELECT saldo FROM users WHERE username = ?", (session["username"],)
+        )
+        saldo = cursor.fetchone()
+        saldo = int(saldo[0])
         conn.close()
         username = session["username"]
         return render_template("dashboard.html",
                                nama_pengguna = username,
                                jumlah_user = len(user), 
                                daftar_user = user,
-                               daftar_produk = products)
+                               daftar_produk = products,
+                               saldo = saldo)
 
 @app.route("/delete", methods = ["POST", "GET"])
 def delete():
@@ -260,8 +266,10 @@ def marketplace():
         )
         products = cursor.fetchall()
         conn.close()
+        buyer = session["username"]
     return render_template("marketplace.html",
-                           daftar_produk = products)
+                           daftar_produk = products,
+                           pembeli = buyer)
 
 
 
