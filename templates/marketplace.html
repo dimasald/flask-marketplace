@@ -15,7 +15,11 @@
     <p>Deskripsi: {{produk[3]}}</p>
     <p>Penjual: {{produk[4]}}</p>
     {% if pembeli != produk[4] %}
-    <a href="/buy-product">Beli Produk</a>
+    <form action="/marketplace">
+        <button type ="submit" name="keranjang" value={{produk[:2]}}>
+            Beli
+        </button>
+    </form>
     {% endif %}
     <hr>
     {% endfor %}

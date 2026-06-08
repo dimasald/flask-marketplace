@@ -267,6 +267,11 @@ def marketplace():
         products = cursor.fetchall()
         conn.close()
         buyer = session["username"]
+        keranjang = request.form["keranjang"]
+        cart = {}
+        cart = cart.append({
+            keranjang[1]: keranjang[2]
+        })
     return render_template("marketplace.html",
                            daftar_produk = products,
                            pembeli = buyer)

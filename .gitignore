@@ -1,0 +1,4 @@
+venv/
+marketplace.db
+crudlangsung.py
+make.py
