@@ -4,15 +4,29 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Delete Page</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
 </head>
 <body>
-    <form action="/delete" method="post">
-        <input type="text" name="password" placeholder="Enter the correct password...">
-        <button type="submit">Delete</button>
-    </form>
+    <main class="page-shell">
+        <section class="hero-card form-card">
+            <div class="hero-top">
+                <span class="eyebrow">Aksi berisiko</span>
+                <h1 class="hero-title">Hapus akun</h1>
+                <p class="hero-copy">Konfirmasi dengan password sebelum akun dihapus permanen.</p>
+            </div>
 
-    <a href ="/dashboard">Kembali ke Dashboard</a>
+            <form class="form-grid" action="/delete" method="post">
+                <div class="field">
+                    <label for="password">Password</label>
+                    <input id="password" type="password" name="password" placeholder="Enter the correct password...">
+                </div>
+                <button class="btn btn-danger" type="submit">Delete</button>
+            </form>
 
-    
+            <div class="toolbar">
+                <a class="btn btn-ghost" href="/dashboard">Kembali ke Dashboard</a>
+            </div>
+        </section>
+    </main>
 </body>
 </html>

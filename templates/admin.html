@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+</head>
+<body>
+    <main class="page-shell">
+        <section class="hero-card">
+            <div class="hero-top">
+                <span class="eyebrow">Panel admin</span>
+                <h1 class="hero-title">Admin Panel</h1>
+                <p class="hero-copy">Kelola user dan produk dari satu tempat dengan kontrol penuh.</p>
+            </div>
+
+            <div class="card" style="margin-bottom: 18px;">
+                <div class="section-title">Daftar User</div>
+                <div class="spaced-list">
+                    {% for user in users %}
+                    <section class="card product-card" style="margin: 0;">
+                        <p class="meta"><strong>ID:</strong> {{ user[0] }}</p>
+                        <p class="meta"><strong>Username:</strong> {{ user[1] }}</p>
+                        <p class="meta"><strong>Role:</strong> {{ user[2] }}</p>
+                        <p class="price">Saldo: Rp {{ "{:,}".format(user[3]).replace(",", ".") }}</p>
+                        <div class="actions">
+                            <a class="btn btn-ghost" href="/admin/user/{{ user[0] }}/edit">Edit User</a>
+                            <form action="/admin/user/{{ user[0] }}/delete" method="POST">
+                                <button class="btn btn-danger" type="submit">Hapus User</button>
+                            </form>
+                        </div>
+                    </section>
+                    {% else %}
+                    <div class="empty-state">Belum ada user.</div>
+                    {% endfor %}
+                </div>
+            </div>
+
+            <div class="card">
+                <div class="section-title">Daftar Produk</div>
+                <div class="grid cols-2">
+                    {% for product in products %}
+                    <section class="card product-card" style="margin: 0;">
+                        <p class="meta"><strong>ID:</strong> {{ product[0] }}</p>
+                        <h2 class="product-title">{{ product[1] }}</h2>
+                        <p class="price">Rp {{ "{:,}".format(product[2]).replace(",", ".") }}</p>
+                        <p class="meta">{{ product[3] }}</p>
+                        <p class="meta"><strong>Penjual:</strong> {{ product[4] }}</p>
+                        <div class="actions">
+                            <a class="btn btn-ghost" href="/admin/product/{{ product[0] }}/edit">Edit Produk</a>
+                            <form action="/admin/product/{{ product[0] }}/delete" method="POST">
+                                <button class="btn btn-danger" type="submit">Hapus Produk</button>
+                            </form>
+                        </div>
+                    </section>
+                    {% else %}
+                    <div class="empty-state">Belum ada produk.</div>
+                    {% endfor %}
+                </div>
+            </div>
+
+            <div class="toolbar">
+                <a class="btn btn-ghost" href="/dashboard">Kembali ke dashboard</a>
+            </div>
+        </section>
+    </main>
+</body>
+</html>

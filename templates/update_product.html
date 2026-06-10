@@ -4,14 +4,33 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Update Product</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
 </head>
 <body>
-    <form method="post">
-        <input type="text" name="nama produk" placeholder="Nama produk">
-        <input type="text" name="harga" placeholder="Harga produk">
-        <input type="text" name="deskripsi" placeholder="Deskripsi produk">
-        <button type="submit">Update</button>
-    </form>
+    <main class="page-shell">
+        <section class="hero-card form-card">
+            <div class="hero-top">
+                <span class="eyebrow">Perbarui produk</span>
+                <h1 class="hero-title">Edit detail produk</h1>
+                <p class="hero-copy">Kosongkan field yang tidak ingin diubah.</p>
+            </div>
 
+            <form class="form-grid" method="post">
+                <div class="field">
+                    <label for="nama-produk">Nama produk</label>
+                    <input id="nama-produk" type="text" name="nama produk" placeholder="Nama produk baru">
+                </div>
+                <div class="field">
+                    <label for="harga">Harga</label>
+                    <input id="harga" type="text" name="harga" placeholder="Harga baru">
+                </div>
+                <div class="field">
+                    <label for="deskripsi">Deskripsi</label>
+                    <textarea id="deskripsi" name="deskripsi" rows="4" placeholder="Deskripsi baru"></textarea>
+                </div>
+                <button class="btn btn-primary" type="submit">Update produk</button>
+            </form>
+        </section>
+    </main>
 </body>
 </html>

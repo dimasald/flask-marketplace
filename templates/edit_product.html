@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Edit Product</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+</head>
+<body>
+    <main class="page-shell">
+        <section class="hero-card form-card">
+            <div class="hero-top">
+                <span class="eyebrow">Admin edit</span>
+                <h1 class="hero-title">Edit Product</h1>
+                <p class="hero-copy">Sesuaikan nama, harga, deskripsi, dan penjual produk.</p>
+            </div>
+
+            <form class="form-grid" method="POST">
+                <div class="field">
+                    <label>Nama</label>
+                    <input type="text" name="nama" value="{{ product[1] }}">
+                </div>
+                <div class="field">
+                    <label>Harga</label>
+                    <input type="number" name="harga" value="{{ product[2] }}">
+                </div>
+                <div class="field">
+                    <label>Deskripsi</label>
+                    <textarea name="deskripsi" rows="4">{{ product[3] }}</textarea>
+                </div>
+                <div class="field">
+                    <label>Penjual</label>
+                    <select name="penjual">
+                        {% for user in users %}
+                        <option value="{{ user[0] }}" {% if user[0] == product[4] %}selected{% endif %}>{{ user[0] }}</option>
+                        {% endfor %}
+                    </select>
+                </div>
+                <button class="btn btn-primary" type="submit">Simpan</button>
+            </form>
+
+            <div class="toolbar">
+                <a class="btn btn-ghost" href="/admin">Kembali</a>
+            </div>
+        </section>
+    </main>
+</body>
+</html>

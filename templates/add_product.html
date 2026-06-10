@@ -4,14 +4,33 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Add Product</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
 </head>
 <body>
-    <form action="/add-product" method="post">
-        <input type="text" name="nama produk" placeholder="Nama produk">
-        <input type="text" name="harga" placeholder="Harga produk">
-        <input type="text" name="deskripsi" placeholder="Deskripsi produk">
-        <button type="submit">Submit</button>
-    </form>
-    
+    <main class="page-shell">
+        <section class="hero-card form-card">
+            <div class="hero-top">
+                <span class="eyebrow">Jual produk</span>
+                <h1 class="hero-title">Tambah produk baru</h1>
+                <p class="hero-copy">Isi detail produk dengan singkat, jelas, dan rapi.</p>
+            </div>
+
+            <form class="form-grid" action="/add-product" method="post">
+                <div class="field">
+                    <label for="nama-produk">Nama produk</label>
+                    <input id="nama-produk" type="text" name="nama produk" placeholder="Nama produk">
+                </div>
+                <div class="field">
+                    <label for="harga">Harga</label>
+                    <input id="harga" type="text" name="harga" placeholder="Harga produk">
+                </div>
+                <div class="field">
+                    <label for="deskripsi">Deskripsi</label>
+                    <textarea id="deskripsi" name="deskripsi" rows="4" placeholder="Deskripsi produk"></textarea>
+                </div>
+                <button class="btn btn-primary" type="submit">Simpan produk</button>
+            </form>
+        </section>
+    </main>
 </body>
 </html>

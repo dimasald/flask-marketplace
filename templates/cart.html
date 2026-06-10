@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cart</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+</head>
+<body>
+    <main class="page-shell">
+        <section class="hero-card">
+            <div class="hero-top">
+                <span class="eyebrow">Ringkasan belanja</span>
+                <h1 class="hero-title">Keranjang</h1>
+                <p class="hero-copy">Cek produk yang sudah masuk lalu lanjutkan checkout saat siap.</p>
+            </div>
+
+            <div class="grid cols-2">
+                {% for produk in keranjang %}
+                <section class="card product-card">
+                    <h2 class="product-title">{{ produk[1] }}</h2>
+                    <p class="price">Rp {{ "{:,}".format(produk[2]).replace(",", ".") }}</p>
+                    <p class="meta">{{ produk[3] }}</p>
+                    <p class="meta"><strong>Penjual:</strong> {{ produk[4] }}</p>
+                    <form action="/checkout/{{ produk[0] }}" method="POST">
+                        <button class="btn btn-success" type="submit">Checkout</button>
+                    </form>
+                </section>
+                {% else %}
+                <div class="empty-state">Keranjang masih kosong.</div>
+                {% endfor %}
+            </div>
+
+            <div class="toolbar">
+                <a class="btn btn-ghost" href="/marketplace">Kembali ke marketplace</a>
+            </div>
+        </section>
+    </main>
+</body>
+</html>

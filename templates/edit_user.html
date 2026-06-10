@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Edit User</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+</head>
+<body>
+    <main class="page-shell">
+        <section class="hero-card form-card">
+            <div class="hero-top">
+                <span class="eyebrow">Admin edit</span>
+                <h1 class="hero-title">Edit User</h1>
+                <p class="hero-copy">Perbarui username, role, saldo, atau password bila perlu.</p>
+            </div>
+
+            <form class="form-grid" method="POST">
+                <div class="field">
+                    <label>Username</label>
+                    <input type="text" name="username" value="{{ user[1] }}">
+                </div>
+                <div class="field">
+                    <label>Password baru (opsional)</label>
+                    <input type="password" name="password" placeholder="Kosongkan kalau tidak diubah">
+                </div>
+                <div class="field">
+                    <label>Role</label>
+                    <input type="text" name="role" value="{{ user[3] }}">
+                </div>
+                <div class="field">
+                    <label>Saldo</label>
+                    <input type="number" name="saldo" value="{{ user[4] }}">
+                </div>
+                <button class="btn btn-primary" type="submit">Simpan</button>
+            </form>
+
+            <div class="toolbar">
+                <a class="btn btn-ghost" href="/admin">Kembali</a>
+            </div>
+        </section>
+    </main>
+</body>
+</html>

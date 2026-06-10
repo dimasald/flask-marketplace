@@ -4,39 +4,79 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Dashboard</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
 </head>
 <body>
-    <h1>Halo, {{nama_pengguna}}!</h1>
-    <h1>Saldo kamu: Rp {{ "{:,}".format(saldo).replace(",", ".")}}</h1>
-    <h1>Jumlah user terdaftar: {{jumlah_user}}</h1>
-    
-    <h1>Daftar user</h1>
+    <main class="page-shell">
+        <section class="hero-card">
+            <div class="hero-top">
+                <span class="eyebrow">Dashboard akun</span>
+                <h1 class="hero-title">Halo, {{ nama_pengguna }}!</h1>
+                <p class="hero-copy">Kelola produk, cek saldo, dan akses fitur marketplace dari satu tempat.</p>
+            </div>
 
-    {% for user in daftar_user %}
-        <p>{{ user[0] }}</p>
-    {% endfor %}
+            <div class="grid cols-3">
+                <div class="card">
+                    <div class="section-title">Saldo kamu</div>
+                    <p class="price">Rp {{ "{:,}".format(saldo).replace(",", ".") }}</p>
+                </div>
+                <div class="card">
+                    <div class="section-title">User terdaftar</div>
+                    <p class="price">{{ jumlah_user }}</p>
+                </div>
+                <div class="card">
+                    <div class="section-title">Role</div>
+                    <p class="price">{{ role }}</p>
+                </div>
+            </div>
 
-    <h1>Daftar Produk kamu:</h1>
+            <div class="stack" style="margin-top: 18px;">
+                <div class="card">
+                    <div class="section-title">Daftar User</div>
+                    <div class="spaced-list">
+                        {% for user in daftar_user %}
+                        <div class="card" style="background: rgba(183, 216, 245, 0.18); box-shadow: none;">
+                            <strong>{{ user[0] }}</strong>
+                        </div>
+                        {% else %}
+                        <div class="empty-state">Belum ada user.</div>
+                        {% endfor %}
+                    </div>
+                </div>
 
-    {% for produk in daftar_produk %}
+                <div class="card">
+                    <div class="section-title">Daftar Produk Kamu</div>
+                    <div class="grid cols-2">
+                        {% for produk in daftar_produk %}
+                        <section class="card product-card" style="margin: 0; background: #fff;">
+                            <h2 class="product-title">{{ produk[1] }}</h2>
+                            <p class="price">Rp {{ "{:,}".format(produk[2]).replace(",", ".") }}</p>
+                            <p class="meta">{{ produk[3] }}</p>
+                            <p class="meta"><strong>Penjual:</strong> {{ produk[4] }}</p>
+                            <div class="actions">
+                                <a class="btn btn-ghost" href="/update-product/{{ produk[0] }}">Perbarui</a>
+                                <a class="btn btn-danger" href="/delete-product/{{ produk[0] }}">Hapus</a>
+                            </div>
+                        </section>
+                        {% else %}
+                        <div class="empty-state">Belum ada produk yang kamu jual.</div>
+                        {% endfor %}
+                    </div>
+                </div>
+            </div>
 
-    <p>Nama: {{produk[1]}}</p>
-    <p>Harga: Rp {{ "{:,}".format(produk[2]).replace(",", ".")}}</p>
-    <p>Deskripsi: {{produk[3]}}</p>
-    <p>Penjual: {{produk[4]}}</p>
-    <a href="/update-product/{{ produk[0] }}">Perbarui produk</a>
-    <a href="/delete-produk/{{ produk[0] }}">Hapus Produk</a>
-    <hr>
-
-    {% endfor %}
-
-    <a href="/">Log out</a>
-    <a href="/delete">Hapus akun</a>
-    <a href="/change-password">Ganti password</a>
-    <a href="/change-name">Ganti nama</a>
-    <a href="/add-product">Tambah produk</a>
-    <a href="/marketplace">Marketplace</a>
-    
-
+            <div class="toolbar">
+                <a class="btn btn-ghost" href="/">Log out</a>
+                <a class="btn btn-ghost" href="/delete">Hapus akun</a>
+                <a class="btn btn-ghost" href="/change-password">Ganti password</a>
+                <a class="btn btn-ghost" href="/change-name">Ganti nama</a>
+                <a class="btn btn-ghost" href="/add-product">Tambah produk</a>
+                <a class="btn btn-primary" href="/marketplace">Marketplace</a>
+                {% if role == "admin" %}
+                <a class="btn btn-accent" href="/admin">Admin Panel</a>
+                {% endif %}
+            </div>
+        </section>
+    </main>
 </body>
 </html>

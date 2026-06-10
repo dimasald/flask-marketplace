@@ -4,18 +4,34 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Register</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
 </head>
 <body>
-    <h1>Ini adalah halaman register</h1>
-    <form action="/register" method="post">
-        <input type="text" name="username" placeholder="Username">
-        <input type="password" name="password" placeholder="Password">
-        <button type="submit">Register</button>
-    </form>
+    <main class="page-shell">
+        <section class="hero-card form-card">
+            <div class="hero-top">
+                <span class="eyebrow">Bergabung</span>
+                <h1 class="hero-title">Buat akun baru</h1>
+                <p class="hero-copy">Daftarkan akun untuk mulai jualan atau belanja di marketplace ini.</p>
+            </div>
 
-    <a href="/">Kembali ke Home</a>
-    <a href="/login">Sudah punya akun? Login sekarang!</a>
+            <form class="form-grid" action="/register" method="post">
+                <div class="field">
+                    <label for="username">Username</label>
+                    <input id="username" type="text" name="username" placeholder="Pilih username">
+                </div>
+                <div class="field">
+                    <label for="password">Password</label>
+                    <input id="password" type="password" name="password" placeholder="Buat password yang kuat">
+                </div>
+                <button class="btn btn-primary" type="submit">Register</button>
+            </form>
 
-
+            <div class="toolbar">
+                <a class="btn btn-ghost" href="/">Kembali ke Home</a>
+                <a class="btn btn-accent" href="/login">Sudah punya akun?</a>
+            </div>
+        </section>
+    </main>
 </body>
 </html>

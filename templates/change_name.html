@@ -4,13 +4,29 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Change Name</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
 </head>
 <body>
-    <form action="/change-name" method="post">
-        <input type="text" name="name" placeholder="Enter new name">
-        <button type="submit">Change</button>
-    </form>
-    
-    <a href = "/dashboard">Kembali ke dashboard</a>
+    <main class="page-shell">
+        <section class="hero-card form-card">
+            <div class="hero-top">
+                <span class="eyebrow">Identitas akun</span>
+                <h1 class="hero-title">Ganti nama</h1>
+                <p class="hero-copy">Perbarui nama tampilan akunmu agar lebih sesuai.</p>
+            </div>
+
+            <form class="form-grid" action="/change-name" method="post">
+                <div class="field">
+                    <label for="name">Nama baru</label>
+                    <input id="name" type="text" name="name" placeholder="Enter new name">
+                </div>
+                <button class="btn btn-primary" type="submit">Change</button>
+            </form>
+
+            <div class="toolbar">
+                <a class="btn btn-ghost" href="/dashboard">Kembali ke dashboard</a>
+            </div>
+        </section>
+    </main>
 </body>
 </html>

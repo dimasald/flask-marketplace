@@ -4,19 +4,19 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Delete Product</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
 </head>
 <body>
-    <form method = "post">
-        <p>Apakah kamu yakin?</p>
-
-        <button type ="submit" name="konfirmasi" value="ya">
-            Ya
-        </button>
-
-        <button type ="submit" name="konfirmasi" value="tidak">
-            Tidak
-        </button>
-    </form>
+    <main class="alert-wrap">
+        <section class="alert-card error">
+            <span class="eyebrow">Konfirmasi</span>
+            <h1>Hapus produk?</h1>
+            <p>Aksi ini akan menghapus produk dari marketplace.</p>
+            <form class="actions" method="post">
+                <button class="btn btn-danger" type="submit" name="konfirmasi" value="ya">Ya, hapus</button>
+                <button class="btn btn-ghost" type="submit" name="konfirmasi" value="tidak">Batal</button>
+            </form>
+        </section>
+    </main>
 </body>
-
 </html>

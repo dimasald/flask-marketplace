@@ -4,12 +4,22 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Marketplace</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
 </head>
 <body>
-    <h1>Selamat Datang</h1>
+    <main class="page-shell">
+        <section class="hero-card">
+            <div class="hero-top">
+                <span class="eyebrow">Marketplace sederhana</span>
+                <h1 class="hero-title">Selamat datang di ruang jual beli yang rapi dan cepat.</h1>
+                <p class="hero-copy">Tempat untuk pasang produk, belanja, dan checkout dengan tampilan yang lebih bersih, modern, dan fokus ke pengalaman mobile.</p>
+            </div>
 
-
-    <a href="/login">Login</a>
-    <a href="/register">Register</a>
+            <div class="actions">
+                <a class="btn btn-primary" href="/login">Login</a>
+                <a class="btn btn-ghost" href="/register">Register</a>
+            </div>
+        </section>
+    </main>
 </body>
 </html>

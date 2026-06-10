@@ -4,17 +4,34 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Login</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
 </head>
 <body>
-    <h1>Ini adalah halaman login</h1>
-    <form action="/login" method="post">
-        <input type="text" name="username" placeholder="Username">
-        <input type="password" name="password" placeholder="Password">
-        <button type="submit">Login</button>
-    </form>
-    <a href="/">Kembali ke Home</a>
-    <a href="/register">Belum punya akun? Register sekarang!</a>
+    <main class="page-shell">
+        <section class="hero-card form-card">
+            <div class="hero-top">
+                <span class="eyebrow">Akses akun</span>
+                <h1 class="hero-title">Masuk ke marketplace</h1>
+                <p class="hero-copy">Gunakan akun yang sudah terdaftar untuk mengelola produk, belanja, dan checkout.</p>
+            </div>
 
+            <form class="form-grid" action="/login" method="post">
+                <div class="field">
+                    <label for="username">Username</label>
+                    <input id="username" type="text" name="username" placeholder="Contoh: dimas">
+                </div>
+                <div class="field">
+                    <label for="password">Password</label>
+                    <input id="password" type="password" name="password" placeholder="Masukkan password">
+                </div>
+                <button class="btn btn-primary" type="submit">Login</button>
+            </form>
 
+            <div class="toolbar">
+                <a class="btn btn-ghost" href="/">Kembali ke Home</a>
+                <a class="btn btn-accent" href="/register">Buat akun baru</a>
+            </div>
+        </section>
+    </main>
 </body>
 </html>

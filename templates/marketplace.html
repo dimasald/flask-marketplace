@@ -4,26 +4,42 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Marketplace</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
 </head>
 <body>
-    <h1>Daftar Produk:</h1>
+    <main class="page-shell">
+        <section class="hero-card">
+            <div class="hero-top">
+                <span class="eyebrow">Etalase produk</span>
+                <h1 class="hero-title">Daftar Produk</h1>
+                <p class="hero-copy">Pilih produk yang kamu butuhkan, lalu masukkan ke keranjang untuk checkout.</p>
+            </div>
 
-    {% for produk in daftar_produk %}
+            <div class="grid cols-3">
+                {% for produk in daftar_produk %}
+                <section class="card product-card">
+                    <h2 class="product-title">{{ produk[1] }}</h2>
+                    <p class="price">Rp {{ "{:,}".format(produk[2]).replace(",", ".") }}</p>
+                    <p class="meta">{{ produk[3] }}</p>
+                    <p class="meta"><strong>Penjual:</strong> {{ produk[4] }}</p>
 
-    <p>Nama: {{produk[1]}}</p>
-    <p>Harga: Rp {{ "{:,}".format(produk[2]).replace(",", ".")}}</p>
-    <p>Deskripsi: {{produk[3]}}</p>
-    <p>Penjual: {{produk[4]}}</p>
-    {% if pembeli != produk[4] %}
-    <form action="/marketplace">
-        <button type ="submit" name="keranjang" value={{produk[:2]}}>
-            Beli
-        </button>
-    </form>
-    {% endif %}
-    <hr>
-    {% endfor %}
+                    {% if pembeli != produk[4] %}
+                    <form action="/marketplace" method="POST">
+                        <input type="hidden" name="product_id" value="{{ produk[0] }}">
+                        <button class="btn btn-primary" type="submit">Masukkan ke Keranjang</button>
+                    </form>
+                    {% endif %}
+                </section>
+                {% else %}
+                <div class="empty-state">Belum ada produk yang ditampilkan.</div>
+                {% endfor %}
+            </div>
 
-    <a href="/dashboard">Kembali ke dashboard</a>
+            <div class="toolbar">
+                <a class="btn btn-ghost" href="/dashboard">Kembali ke dashboard</a>
+                <a class="btn btn-accent" href="/cart">Cek keranjang</a>
+            </div>
+        </section>
+    </main>
 </body>
 </html>
