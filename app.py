@@ -1,6 +1,13 @@
 from flask import Flask, render_template, request, redirect, session
 import sqlite3
+import os
 from werkzeug.security import generate_password_hash, check_password_hash
+
+BASE_DIR = os.path.dirname(os.path.abspath(__file__))
+DB_PATH = os.path.join(BASE_DIR, "marketplace.db")
+
+def get_db():
+    return sqlite3.connect(DB_PATH)
 
 app = Flask(__name__)
 app.secret_key = "rahasia"
@@ -33,7 +40,7 @@ def login():
     if request.method == "POST":
         username = request.form["username"]
         password = request.form["password"]
-        conn = sqlite3.connect("marketplace.db")
+        conn = get_db()
         cursor = conn.cursor()
         cursor.execute(
             "SELECT * FROM users WHERE username = ?",
@@ -61,7 +68,7 @@ def register():
         password = request.form["password"]
         hashed = generate_password_hash(password)
 
-        conn = sqlite3.connect("marketplace.db")
+        conn = get_db()
         cursor = conn.cursor()
         try:
             cursor.execute(
@@ -86,7 +93,7 @@ def dashboard():
     if "username" not in session:
         return redirect("/login")
 
-    conn = sqlite3.connect("marketplace.db")
+    conn = get_db()
     cursor = conn.cursor()
     cursor.execute("SELECT username FROM users")
     user = cursor.fetchall()
@@ -122,7 +129,7 @@ def delete():
 
     if request.method == "POST":
         password = request.form["password"]
-        conn = sqlite3.connect("marketplace.db")
+        conn = get_db()
         cursor = conn.cursor()
         cursor.execute(
             "SELECT password FROM users WHERE username = ?",
@@ -154,7 +161,7 @@ def change_password():
     if request.method == "POST":
         password = request.form["password"]
         hashed = generate_password_hash(password)
-        conn = sqlite3.connect("marketplace.db")
+        conn = get_db()
         cursor = conn.cursor()
         cursor.execute(
             "UPDATE users SET password = ? WHERE username = ?",
@@ -175,7 +182,7 @@ def change_name():
     if request.method == "POST":
         old_name = session["username"]
         name = request.form["name"]
-        conn = sqlite3.connect("marketplace.db")
+        conn = get_db()
         cursor = conn.cursor()
         cursor.execute(
             "UPDATE users SET username = ? WHERE username = ?",
@@ -203,7 +210,7 @@ def add_product():
             return render_message("Input Tidak Valid", "Harga harus berupa angka", "error", "/add-product", "Coba lagi")
         description = request.form["deskripsi"]
 
-        conn = sqlite3.connect("marketplace.db")
+        conn = get_db()
         cursor = conn.cursor()
         cursor.execute(
             """
@@ -221,7 +228,7 @@ def add_product():
 
 @app.route("/update-product/<int:id>", methods=["GET", "POST"])
 def update_product(id):
-    conn = sqlite3.connect("marketplace.db")
+    conn = get_db()
     cursor = conn.cursor()
     cursor.execute(
         """
@@ -274,7 +281,7 @@ def update_product(id):
 
 @app.route("/delete-product/<int:id>", methods=["GET", "POST"])
 def delete_product(id):
-    conn = sqlite3.connect("marketplace.db")
+    conn = get_db()
     cursor = conn.cursor()
     cursor.execute(
         """
@@ -310,7 +317,7 @@ def marketplace():
     if "username" not in session:
         return redirect("/login")
 
-    conn = sqlite3.connect("marketplace.db")
+    conn = get_db()
     cursor = conn.cursor()
     cursor.execute("SELECT * FROM products")
     products = cursor.fetchall()
@@ -352,7 +359,7 @@ def cart():
     if "username" not in session:
         return redirect("/login")
 
-    conn = sqlite3.connect("marketplace.db")
+    conn = get_db()
     cursor = conn.cursor()
     cursor.execute(
         """
@@ -376,7 +383,7 @@ def admin_dashboard():
             return redirect("/login")
         return redirect("/dashboard")
 
-    conn = sqlite3.connect("marketplace.db")
+    conn = get_db()
     cursor = conn.cursor()
     cursor.execute("SELECT id, username, role, saldo FROM users")
     users = cursor.fetchall()
@@ -394,7 +401,7 @@ def admin_edit_user(id):
             return redirect("/login")
         return redirect("/dashboard")
 
-    conn = sqlite3.connect("marketplace.db")
+    conn = get_db()
     cursor = conn.cursor()
     cursor.execute("SELECT id, username, password, role, saldo FROM users WHERE id = ?", (id,))
     user = cursor.fetchone()
@@ -455,7 +462,7 @@ def admin_delete_user(id):
             return redirect("/login")
         return redirect("/dashboard")
 
-    conn = sqlite3.connect("marketplace.db")
+    conn = get_db()
     cursor = conn.cursor()
     cursor.execute("SELECT id, username FROM users WHERE id = ?", (id,))
     user = cursor.fetchone()
@@ -487,7 +494,7 @@ def admin_edit_product(id):
             return redirect("/login")
         return redirect("/dashboard")
 
-    conn = sqlite3.connect("marketplace.db")
+    conn = get_db()
     cursor = conn.cursor()
     cursor.execute("SELECT id, nama, harga, deskripsi, penjual FROM products WHERE id = ?", (id,))
     product = cursor.fetchone()
@@ -539,7 +546,7 @@ def admin_delete_product(id):
             return redirect("/login")
         return redirect("/dashboard")
 
-    conn = sqlite3.connect("marketplace.db")
+    conn = get_db()
     cursor = conn.cursor()
     cursor.execute("DELETE FROM cart WHERE product_id = ?", (id,))
     cursor.execute("DELETE FROM products WHERE id = ?", (id,))
@@ -554,7 +561,7 @@ def checkout(id):
         return redirect("/login")
 
     buyer = session["username"]
-    conn = sqlite3.connect("marketplace.db")
+    conn = get_db()
     cursor = conn.cursor()
 
     cursor.execute(
